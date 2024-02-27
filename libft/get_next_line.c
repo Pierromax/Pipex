@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 04:50:02 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/01/11 14:44:18 by ple-guya         ###   ########.fr       */
+/*   Updated: 2024/02/06 18:57:47 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "libft.h"
 
 int	is_newline(char *s)
 {
@@ -74,27 +74,3 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-/*
- int main ()
-{
-	int fd;
-	char *str;
-	// int i = 0;
-
-	fd = open("rap.txt", O_RDONLY);
-	str = get_next_line(fd);
-	while (str)
-	{
-		printf("%s", str);
-		free(str);
-		str = get_next_line(fd);
- 	} 
- 	while (i  < 4)
-	{
-		str = get_next_line(fd);
-		printf("%s", str);
-		i++;
-	}
-	close (fd);
-	return 0;
-} */

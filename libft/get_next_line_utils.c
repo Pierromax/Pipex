@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/02 13:09:39 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/01/11 14:25:34 by ple-guya         ###   ########.fr       */
+/*   Created: 2023/11/28 04:29:13 by ple-guya          #+#    #+#             */
+/*   Updated: 2024/02/06 18:58:16 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "libft.h"
 
-int	ft_strlen(char *s)
+int	ft_strglen(char *s)
 {
 	int	i;
 
@@ -45,40 +45,4 @@ char	*ft_strnjoin(char *s1, char *s2, int nl)
 		str[len1] = s1[len1];
 	free(s1);
 	return (str);
-}
-
-void	*ft_calloc(size_t nmemb, size_t size)
-{
-	char	*str;
-	size_t	memsize;
-
-	memsize = nmemb * size;
-	if (size && memsize / size != nmemb)
-		return (NULL);
-	str = malloc(memsize);
-	if (!str)
-		return (NULL);
-	ft_bzero(str, memsize);
-	return (str);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	unsigned char	*str;
-
-	str = s;
-	while (n-- > 0)
-		*str++ = '\0';
-}
-
-void	*ft_memcpy(void *dest, const void *src, size_t n)
-{
-	char	*s;
-
-	if (!dest && !src)
-		return (NULL);
-	s = (char *)dest;
-	while (n-- > 0)
-		*s++ = *(char *)src++;
-	return (dest);
 }

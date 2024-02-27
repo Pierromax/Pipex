@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/02 13:32:52 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/01/11 13:57:22 by ple-guya         ###   ########.fr       */
+/*   Created: 2023/12/03 04:50:02 by ple-guya          #+#    #+#             */
+/*   Updated: 2024/02/06 18:59:52 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "libft.h"
 
 int	is_newline(char *s)
 {
@@ -57,20 +57,20 @@ void	*get_next_buff(void *d, void *s, int nl)
 
 char	*get_next_line(int fd)
 {
-	static char		buffer[BUFFER_SIZE];
+	static char		buffer[FD_MAX][BUFFER_SIZE];
 	char			*line;
 	int				nl;
 
 	line = NULL;
-	if (fd < 0 || read(fd, 0, BUFFER_SIZE * 0))
+	if (fd < 0 || read(fd, 0, BUFFER_SIZE * 0) || fd >= FD_MAX)
 		return (NULL);
-	while ((!is_newline(line)) && read_buffer(fd, (char *)buffer) > 0)
+	while ((!is_newline(line)) && read_buffer(fd, (char *)buffer[fd]) > 0)
 	{
-		nl = is_newline(buffer);
-		line = ft_strnjoin(line, buffer, nl);
+		nl = is_newline(buffer[fd]);
+		line = ft_strnjoin(line, buffer[fd], nl);
 		if (!line)
 			return (NULL);
-		get_next_buff(buffer, &buffer[nl], nl);
+		get_next_buff(buffer[fd], &buffer[fd][nl], nl);
 	}
 	return (line);
 }

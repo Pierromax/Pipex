@@ -6,7 +6,7 @@
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 17:34:55 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/02/29 20:59:33 by ple-guya         ###   ########.fr       */
+/*   Updated: 2024/02/25 20:58:35 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	main(int ac, char **av, char **env)
 {
 	t_pipe	p;
 
-	if (ac != 5)
+	if (ac < 5)
 	{
-		ft_putendl_fd("usage : File1 Cmd1 Cmd2 File2\n", 2);
+		ft_putendl_fd("usage : File1 Cmd ... Cmd File2\n", 2);
 		return (0);
 	}
 	p.i = 0;

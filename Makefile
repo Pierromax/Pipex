@@ -1,33 +1,36 @@
 NAME	= pipex
 
+NAME_BONUS	= pipex_bonus
 CC	= cc
 CFLAGS	= -Wall -Wextra -Werror 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
-FILES 			= 	pipex	\
+FILES			=	pipex	\
 					init	\
 					main
-SRCS 			=  src/*.c
-OBJS	= $(SRCS:.c=.o)
-RM  	= rm -rf
+SRCS			= $(addsuffix .c, $(addprefix src/, $(FILES)))
+SRCS_BONUS		= $(addsuffix .c, $(addprefix bonus/, $(FILES)))
+OBJS			= $(SRCS:.c=.o)
+RM				= rm -rf
 
 # CURSOR MOVEMENTS
-MOV_U			= 	\033[1A
-MOV_D			= 	\033[1B
-MOV_F			= 	\033[1C
-MOV_B			= 	\033[1D
+MOV_U			=	\033[1A
+MOV_D			=	\033[1B
+MOV_F			=	\033[1C
+MOV_B			=	\033[1D
 
-ERASE_ALL		= 	\033[0J
+ERASE_ALL		=	\033[0J
 
 # COLORS 
-YELLOW 			= 	\033[0;33m
-GREEN 			= 	\033[0;32m
-BLUE 			= 	\033[0;34m
-RED				= 	\033[0;31m
-PURPLE 			= 	\033[0;35m
-CYAN 			= 	\033[0;36m
-BLACK 			= 	\033[0;30
-WHITE 			= 	\033[0;37m
+YELLOW			=	\033[0;33m
+GREEN			=	\033[0;32m
+BLUE			=	\033[0;34m
+RED				=	\033[0;31m
+PURPLE			=	\033[0;35m
+CYAN			=	\033[0;36m
+BLACK			=	\033[0;30
+WHITE			=	\033[0;37m
+
 
 all : $(LIBFT) $(NAME)
 
@@ -41,7 +44,7 @@ $(NAME):
 	@echo " | (__| (_) || |\/| ||  _/ | | | |__  | |  |    |  | (_ | _  _  _  " ;
 	@echo "  \___|\___/ |_|  |_||_|  |___||____||___| |_|\_|   \___|(_)(_)(_) " ;
 	@${CC} ${CFLAGS} ${SRCS} $(LIBFT) -o $(NAME)
-	@sleep 0.1
+	@sleep 0.05
 	@echo "$(CYAN)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)"
 	@echo "        )     *     (    (    (         (             (        )   "
 	@echo "   (   ( /(   (       )\ ) )\ ) )\ )      )\ )      (   )\ )  ( /(   "
@@ -53,11 +56,35 @@ $(NAME):
 	@echo "  \___|\___/ |_|  |_||_|  |___||____||___||___/   |___/|_|_\ \___/  "
 	@echo ""
 
+
 $(LIBFT):
-	make --silent -C $(LIBFT_DIR)
+	@make --silent -C $(LIBFT_DIR)
+
+bonus :
+	@echo "$(RED)          )     *     (    (    (     (        )            " ;
+	@echo "   (   ( /(   (      )\ ) )\ ) )\ )  )\ )  ( /(  (                " ;
+	@echo "  )\  )\())  )\))(  (()/((()/((()/( (()/(  )\()) )\ )             " ; 
+	@echo " (((_)((_)\  ((_)()\  /(_))/(_))/(_)) /(_))((_)\ (()/(             " ;
+	@echo " )\___  ((_) (_()((_)(_)) (_)) (_))  (_))   _((_) /(_))_           " ;
+	@echo "((/ __|/ _ \ |  \/  || _ \|_ _|| |   |_ _| | \| |(_)) __|          " ;
+	@echo " | (__| (_) || |\/| ||  _/ | | | |__  | |  |    |  | (_ | _  _  _  " ;
+	@echo "  \___|\___/ |_|  |_||_|  |___||____||___| |_|\_|   \___|(_)(_)(_) " ;
+	@${CC} ${CFLAGS} ${SRCS_BONUS} $(LIBFT) -o $(NAME_BONUS)
+	@sleep 0.05
+	@echo "$(CYAN)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)"
+	@echo "        )     *     (    (    (         (             (        )   "
+	@echo "   (   ( /(   (       )\ ) )\ ) )\ )      )\ )      (   )\ )  ( /(   "
+	@echo "   )\  )\())  )\))(  (()/((()/((()/(  (  (()/(    ( )\ (()/(  )\())  "
+	@echo " (((_)((_)\  ((_)()\  /(_))/(_))/(_)) )\  /(_))   )((_) /(_))((_)\   "
+	@echo " )\___  ((_) (_()((_)(_)) (_)) (_))  ((_)(_))_   ((_)_ (_))   ((_)  "
+	@echo "((/ __|/ _ \ |  \/  || _ \|_ _|| |   | __||   \   | _ )| _ \ / _ \  "
+	@echo " | (__| (_) || |\/| ||  _/ | | | |__ | _| | |) |  | _ \|   /| (_) |  "
+	@echo "  \___|\___/ |_|  |_||_|  |___||____||___||___/   |___/|_|_\ \___/  "
+	@echo ""
 
 clean :
-	@$(RM) $(OBJS)
+	@$(RM) $(NAME)
+	@$(RM) $(NAME_BONUS)
 	@make clean --silent -C $(LIBFT_DIR)
 	@echo "$(CYAN)       (                  )        (       )   "
 	@echo "   (   )\ )      (     ( /(     (  )\ ) ( /(   "
@@ -75,4 +102,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY	: all clean fclean re
+.PHONY	: all clean fclean bonus re

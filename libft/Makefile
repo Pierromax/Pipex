@@ -41,13 +41,11 @@ all 	: $(NAME)
 
 clean :
 	@$(RM) $(OBJS)
-	@echo "$(PURPLE)clean bro"
 
 fclean : clean
 	@$(RM) $(NAME)
 
 compil :
-	@echo "Compiling...\n"
 	@$(CC) $(CFLAGS) -g -o lezgo $(SRCS)
 	@./lezgo
 

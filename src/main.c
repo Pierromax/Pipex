@@ -6,7 +6,7 @@
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 17:34:55 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/02/29 20:59:33 by ple-guya         ###   ########.fr       */
+/*   Updated: 2024/04/03 19:09:50 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ int	main(int ac, char **av, char **env)
 		ft_putendl_fd("usage : File1 Cmd1 Cmd2 File2\n", 2);
 		return (0);
 	}
+	if (!env[0])
+		return (1);
+	while (ft_strncmp(*env, "PATH=", 5) != 0)
+		env++;
+	if (ft_strncmp(*env, "PATH=", 5) != 0)
+		return (0);
 	p.i = 0;
 	get_file(&p, ac, av, env);
 	while (p.cmd[p.i])

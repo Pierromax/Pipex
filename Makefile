@@ -44,7 +44,6 @@ $(NAME):
 	@echo " | (__| (_) || |\/| ||  _/ | | | |__  | |  |    |  | (_ | _  _  _  " ;
 	@echo "  \___|\___/ |_|  |_||_|  |___||____||___| |_|\_|   \___|(_)(_)(_) " ;
 	@${CC} ${CFLAGS} ${SRCS} $(LIBFT) -o $(NAME)
-	@sleep 0.05
 	@echo "$(CYAN)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)"
 	@echo "        )     *     (    (    (         (             (        )   "
 	@echo "   (   ( /(   (       )\ ) )\ ) )\ )      )\ )      (   )\ )  ( /(   "
@@ -70,7 +69,6 @@ bonus :
 	@echo " | (__| (_) || |\/| ||  _/ | | | |__  | |  |    |  | (_ | _  _  _  " ;
 	@echo "  \___|\___/ |_|  |_||_|  |___||____||___| |_|\_|   \___|(_)(_)(_) " ;
 	@${CC} ${CFLAGS} ${SRCS_BONUS} $(LIBFT) -o $(NAME_BONUS)
-	@sleep 0.05
 	@echo "$(CYAN)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)$(MOV_U)"
 	@echo "        )     *     (    (    (         (             (        )   "
 	@echo "   (   ( /(   (       )\ ) )\ ) )\ )      )\ )      (   )\ )  ( /(   "

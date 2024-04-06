@@ -6,7 +6,7 @@
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:34:04 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/02/29 20:50:22 by ple-guya         ###   ########.fr       */
+/*   Updated: 2024/04/05 15:42:03 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	last_child(t_pipe *p)
 		dup2(p->fdo, STDOUT_FILENO);
 		close(p->fdo);
 	}
-	else
+	else if (p->i > 0)
 	{
 		dup2(p->prev, STDIN_FILENO);
 		close(p->prev);

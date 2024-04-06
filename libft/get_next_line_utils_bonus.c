@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/28 04:29:13 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/04/03 19:19:13 by ple-guya         ###   ########.fr       */
+/*   Created: 2023/12/02 13:09:39 by ple-guya          #+#    #+#             */
+/*   Updated: 2024/04/03 19:18:40 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	ft_strlen_protect(char *s)
 {
@@ -34,7 +34,7 @@ char	*ft_strnjoin(char *s1, char *s2, int nl)
 	if (nl)
 		len2 = nl;
 	else
-		len2 = ft_strlen_protect(s2);
+		len2 = ft_strlen(s2);
 	str = malloc((len1 + len2 + 1) * sizeof(char));
 	if (!str)
 		return (free(s1), NULL);

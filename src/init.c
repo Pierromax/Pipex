@@ -6,7 +6,7 @@
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 03:08:38 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/02/28 22:09:56 by ple-guya         ###   ########.fr       */
+/*   Updated: 2024/04/02 16:40:49 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ void	init_env(char **env, t_pipe *p)
 	char	**dir_tmp;
 
 	i = 0;
-	while (ft_strncmp(*env, "PATH=", 5) != 0)
-		env++;
 	dir_tmp = ft_split(*env + 5, ':');
 	if (!dir_tmp)
 		return (clean_2dtab(dir_tmp));
 	p->dir = malloc(sizeof(char *) * (ft_tablen(dir_tmp) + 1));
+	if (!p->dir)
+		return (clean_2dtab(p->dir));
 	while (dir_tmp[i])
 	{
 		tmp = ft_strjoin(dir_tmp[i], "/");
@@ -74,12 +74,12 @@ void	get_valid_path(t_pipe *p)
 	int		i;
 
 	i = 0;
-	if (ft_strchr(p->cmd[p->i], '/'))
+	cmd_tmp = ft_split(p->cmd[p->i], ' ');
+	if (ft_strchr(p->cmd[p->i], '/') && !access(cmd_tmp[0], F_OK | X_OK))
 	{
-		p->path = p->cmd[p->i];
+		p->path = cmd_tmp[0];
 		return ;
 	}
-	cmd_tmp = ft_split(p->cmd[p->i], ' ');
 	if (!cmd_tmp)
 		return (clean_2dtab(cmd_tmp));
 	while (p->dir[i])

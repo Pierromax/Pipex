@@ -31,8 +31,6 @@ WHITE 			= 	\033[0;37m
 
 .o : .c
 	@$(CC) $(CFLAGS) -c $@ -o $<
-	@echo "$(RED)compiling..."
-	@echo "$(PURPLE)libft ready to use"
 
 $(NAME): $(OBJS)
 	@ar rcs $(NAME) $(OBJS)
@@ -46,6 +44,7 @@ fclean : clean
 	@$(RM) $(NAME)
 
 compil :
+	@echo "Compiling...\n"
 	@$(CC) $(CFLAGS) -g -o lezgo $(SRCS)
 	@./lezgo
 

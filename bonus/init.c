@@ -6,7 +6,7 @@
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 03:08:38 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/02/28 22:09:56 by ple-guya         ###   ########.fr       */
+/*   Updated: 2024/04/06 22:02:13 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,25 @@
 
 void	get_file(t_pipe *p, int ac, char **av, char **env)
 {
-	p->fdi = open(av[1], O_RDWR);
-	if (p->fdi == -1)
-		perror(av[1]);
-	p->fdo = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0666);
+	if (ft_strncmp(av[1], "here_docs", 9) == 0 && ac > 5)
+	{
+		p->limiter = av[2];
+		p->is_heredocs = 1;
+		p->fdi = 0;
+	}
+	else
+	{
+		p->is_heredocs = 0;
+		p->fdi = open(av[1], O_RDWR);
+		if (p->fdi == -1)
+			perror(av[1]);
+	}
+	if (p->is_heredocs == 1)
+		p->fdo = open(av[ac - 1], O_RDWR | O_CREAT | O_APPEND, 0666);
+	else
+		p->fdo = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0666);
+	if (p->fdo == -1)
+		perror(av[ac - 1]);
 	init_env(env, p);
 	init_cmd(ac, av, p);
 }
@@ -30,8 +45,8 @@ void	init_cmd(int ac, char **av, t_pipe *p)
 	p->cmd = malloc(sizeof(char *) * (ac - 2));
 	if (!p->cmd)
 		return (clean_2dtab(p->cmd));
-	av += 2;
-	while (i < ac - 3)
+	av = av + 2 + p->is_heredocs;
+	while (i < ac - 3 - p->is_heredocs)
 	{
 		p->cmd[i] = ft_strdup(*av);
 		if (!p->cmd[i])
@@ -51,6 +66,8 @@ void	init_env(char **env, t_pipe *p)
 	i = 0;
 	while (ft_strncmp(*env, "PATH=", 5) != 0)
 		env++;
+	if (ft_strncmp(*env, "PATH=", 5) != 0)
+		exit(1);
 	dir_tmp = ft_split(*env + 5, ':');
 	if (!dir_tmp)
 		return (clean_2dtab(dir_tmp));
@@ -74,12 +91,12 @@ void	get_valid_path(t_pipe *p)
 	int		i;
 
 	i = 0;
-	if (ft_strchr(p->cmd[p->i], '/'))
+	cmd_tmp = ft_split(p->cmd[p->i], ' ');
+	if (ft_strchr(p->cmd[p->i], '/') && !access(cmd_tmp[0], F_OK | X_OK))
 	{
-		p->path = p->cmd[p->i];
+		p->path = cmd_tmp[0];
 		return ;
 	}
-	cmd_tmp = ft_split(p->cmd[p->i], ' ');
 	if (!cmd_tmp)
 		return (clean_2dtab(cmd_tmp));
 	while (p->dir[i])
@@ -95,4 +112,22 @@ void	get_valid_path(t_pipe *p)
 	}
 	p->path = ft_strdup("");
 	clean_2dtab(cmd_tmp);
+}
+
+void	ft_heredocs(t_pipe *p)
+{
+	char	*line;
+	int		limiter_len;
+
+	limiter_len = ft_strlen(p->limiter);
+	write(1, "> ", 2);
+	line = get_next_line(p->fdi);
+	while (line && ft_strncmp(p->limiter, line, limiter_len))
+	{
+		write(1, "> ", 2);
+		write(p->pipedocs[WRITE_END], line, ft_strlen(line));
+		free(line);
+		line = get_next_line(p->fdi);
+	}
+	close(p->pipedocs[WRITE_END]);
 }

@@ -6,11 +6,19 @@
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 17:34:55 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/02/25 20:58:35 by ple-guya         ###   ########.fr       */
+/*   Updated: 2024/04/06 22:00:38 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
+
+void	check_file_permission(t_pipe *p)
+{
+	if (p->fdi == -1 && p->i == 0)
+		close(p->pipefd[READ_END]);
+	if (p->fdo == -1 && !p->cmd[p->i + 1])
+		exit(0);
+}
 
 int	main(int ac, char **av, char **env)
 {
@@ -18,7 +26,7 @@ int	main(int ac, char **av, char **env)
 
 	if (ac < 5)
 	{
-		ft_putendl_fd("usage : File1 Cmd ... Cmd File2\n", 2);
+		ft_putendl_fd("usage : Infile Cmd1 ... Cmdn outfile\n", 2);
 		return (0);
 	}
 	p.i = 0;

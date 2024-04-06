@@ -6,7 +6,7 @@
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:34:04 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/02/29 20:50:22 by ple-guya         ###   ########.fr       */
+/*   Updated: 2024/04/06 22:02:25 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,14 @@ static void	maman(t_pipe *p)
 		{
 			perror("pipe");
 			exit(1);
+		}
+		if (p->is_heredocs == 1)
+		{
+			if (pipe(p->pipedocs) < 0)
+			{
+				perror("pipe here_docs");
+				exit(1);
+			}
 		}
 	}
 	else if (p->cmd[p->i + 1])
@@ -35,9 +43,14 @@ static void	maman(t_pipe *p)
 
 static void	papa(t_pipe *p)
 {
-	if (p->i == 0)
+	if (p->i == 0 && p->is_heredocs == 0)
 	{
 		close(p->fdi);
+		close(p->pipefd[WRITE_END]);
+	}
+	if (p->i == 0 && p->is_heredocs == 1)
+	{
+		close(p->pipedocs[READ_END]);
 		close(p->pipefd[WRITE_END]);
 	}
 	else if (!p->cmd[p->i + 1])
@@ -52,7 +65,7 @@ static void	papa(t_pipe *p)
 	}
 }
 
-static void	last_child(t_pipe *p)
+static void	other_child(t_pipe *p)
 {
 	if (!p->cmd[p->i + 1])
 	{
@@ -61,19 +74,28 @@ static void	last_child(t_pipe *p)
 		dup2(p->fdo, STDOUT_FILENO);
 		close(p->fdo);
 	}
-	else
+	else if (p->i > 0)
 	{
 		dup2(p->prev, STDIN_FILENO);
 		close(p->prev);
 		dup2(p->pipefd[WRITE_END], STDOUT_FILENO);
 		close(p->pipefd[WRITE_END]);
+	}
+	else if (p->i == 0 && p->is_heredocs == 1)
+	{
+		ft_heredocs(p);
+		dup2(p->pipedocs[READ_END], STDIN_FILENO);
+		close(p->pipedocs[READ_END]);
+		dup2(p->pipefd[WRITE_END], STDOUT_FILENO);
+		close(p->pipefd[WRITE_END]);
 		close(p->pipefd[READ_END]);
+		close(p->fdo);
 	}
 }
 
 static void	child(t_pipe *p, char **cmd, char **env)
 {
-	if (p->i == 0)
+	if (p->i == 0 && p->is_heredocs == 0)
 	{
 		close(p->pipefd[READ_END]);
 		dup2(p->fdi, STDIN_FILENO);
@@ -83,15 +105,11 @@ static void	child(t_pipe *p, char **cmd, char **env)
 		close(p->pipefd[WRITE_END]);
 	}
 	else
-		last_child(p);
+		other_child(p);
 	get_valid_path(p);
-	if (p->fdi == -1 && p->i == 0)
-		close(p->pipefd[READ_END]);
-	else
-	{
-		execve(p->path, cmd, env);
-		perror(cmd[0]);
-	}
+	check_file_permission(p);
+	execve(p->path, cmd, env);
+	perror(cmd[0]);
 	close(p->pipefd[WRITE_END]);
 	clean_2dtab(cmd);
 	free(p->path);

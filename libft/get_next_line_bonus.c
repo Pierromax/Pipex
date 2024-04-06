@@ -6,11 +6,11 @@
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 04:50:02 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/02/06 18:59:52 by ple-guya         ###   ########.fr       */
+/*   Updated: 2024/04/03 19:15:41 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "get_next_line_bonus.h"
 
 int	is_newline(char *s)
 {
@@ -74,3 +74,27 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
+
+//  int main ()
+// {
+// 	int fd;
+// 	char *str;
+// 	// int i = 0;
+
+// 	fd = open("test.txt", O_RDONLY);
+// 	str = get_next_line(fd);
+// 	while (str)
+// 	{
+// 		printf("%s", str);
+// 		free(str);
+// 		str = get_next_line(fd);
+//  	} 
+// /*  	while (i  < 4)
+// 	{
+// 		str = get_next_line(fd);
+// 		printf("%s", str);
+// 		i++;
+// 	}  */
+// 	close (fd);
+// 	return 0;
+// }

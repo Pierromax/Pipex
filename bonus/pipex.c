@@ -6,7 +6,7 @@
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:34:04 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/04/06 22:02:25 by ple-guya         ###   ########.fr       */
+/*   Updated: 2024/04/08 17:01:57 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	maman(t_pipe *p)
 		{
 			if (pipe(p->pipedocs) < 0)
 			{
-				perror("pipe here_docs");
+				perror("pipe here_doc");
 				exit(1);
 			}
 		}
@@ -51,6 +51,7 @@ static void	papa(t_pipe *p)
 	if (p->i == 0 && p->is_heredocs == 1)
 	{
 		close(p->pipedocs[READ_END]);
+		close(p->pipedocs[WRITE_END]);
 		close(p->pipefd[WRITE_END]);
 	}
 	else if (!p->cmd[p->i + 1])
@@ -115,6 +116,8 @@ static void	child(t_pipe *p, char **cmd, char **env)
 	free(p->path);
 	clean_2dtab(p->cmd);
 	clean_2dtab(p->dir);
+	close(p->fdo);
+	close(p->fdi);
 	exit(EXIT_FAILURE);
 }
 

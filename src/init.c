@@ -6,7 +6,7 @@
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 03:08:38 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/04/02 16:40:49 by ple-guya         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:07:55 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,15 @@ void	get_file(t_pipe *p, int ac, char **av, char **env)
 	if (p->fdi == -1)
 		perror(av[1]);
 	p->fdo = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0666);
+	while (*env)
+	{
+		if (!ft_strncmp(*env, "PATH=", 5))
+			break ;
+		else
+			env++;
+	}
+	if (!(*env))
+		exit(1);
 	init_env(env, p);
 	init_cmd(ac, av, p);
 }

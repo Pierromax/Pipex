@@ -6,7 +6,7 @@
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:34:47 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/04/06 21:58:50 by ple-guya         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:11:07 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_pipe
 	int		is_heredocs;
 	int		pipedocs[2];
 	char	*limiter;
+	char	*outfile_name;
 }	t_pipe;
 
 void	init_env(char **env, t_pipe *p);

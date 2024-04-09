@@ -6,7 +6,7 @@
 /*   By: ple-guya <ple-guya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 03:08:38 by ple-guya          #+#    #+#             */
-/*   Updated: 2024/04/06 22:02:13 by ple-guya         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:25:33 by ple-guya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 void	get_file(t_pipe *p, int ac, char **av, char **env)
 {
-	if (ft_strncmp(av[1], "here_docs", 9) == 0 && ac > 5)
+	if (ft_strncmp(av[1], "here_doc", 8) == 0 && ac > 5)
 	{
 		p->limiter = av[2];
 		p->is_heredocs = 1;
+		p->fdo = open(av[ac - 1], O_RDWR | O_CREAT | O_APPEND, 0666);
 		p->fdi = 0;
 	}
 	else
@@ -26,13 +27,16 @@ void	get_file(t_pipe *p, int ac, char **av, char **env)
 		p->fdi = open(av[1], O_RDWR);
 		if (p->fdi == -1)
 			perror(av[1]);
-	}
-	if (p->is_heredocs == 1)
-		p->fdo = open(av[ac - 1], O_RDWR | O_CREAT | O_APPEND, 0666);
-	else
 		p->fdo = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0666);
-	if (p->fdo == -1)
-		perror(av[ac - 1]);
+	}
+	p->outfile_name = av[ac - 1];
+	while (*env)
+	{
+		if (!ft_strncmp(*env, "PATH=", 5))
+			break ;
+		else
+			env++;
+	}
 	init_env(env, p);
 	init_cmd(ac, av, p);
 }
@@ -64,9 +68,7 @@ void	init_env(char **env, t_pipe *p)
 	char	**dir_tmp;
 
 	i = 0;
-	while (ft_strncmp(*env, "PATH=", 5) != 0)
-		env++;
-	if (ft_strncmp(*env, "PATH=", 5) != 0)
+	if (!(*env))
 		exit(1);
 	dir_tmp = ft_split(*env + 5, ':');
 	if (!dir_tmp)
@@ -122,7 +124,7 @@ void	ft_heredocs(t_pipe *p)
 	limiter_len = ft_strlen(p->limiter);
 	write(1, "> ", 2);
 	line = get_next_line(p->fdi);
-	while (line && ft_strncmp(p->limiter, line, limiter_len))
+	while (ft_strncmp(p->limiter, line, limiter_len))
 	{
 		write(1, "> ", 2);
 		write(p->pipedocs[WRITE_END], line, ft_strlen(line));
